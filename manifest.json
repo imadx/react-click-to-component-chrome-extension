@@ -7,6 +7,7 @@
     "service_worker": "sw.js"
   },
   "permissions": ["scripting", "webNavigation"],
+  "host_permissions": ["http://*/*"],
   "action": {},
   "icons": {
     "16": "assets/icon-16.png",

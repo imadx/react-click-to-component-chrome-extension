@@ -6,7 +6,7 @@
   "background": {
     "service_worker": "sw.js"
   },
-  "permissions": ["nativeMessaging", "scripting", "webNavigation"],
+  "permissions": ["scripting", "webNavigation"],
   "host_permissions": ["http://*/*"],
   "action": {},
   "icons": {

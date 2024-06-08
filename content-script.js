@@ -13,10 +13,7 @@
     return `vscode://file://${fileName}:${debugSource.lineNumber}:${debugSource.columnNumber}`;
   };
 
-  const handleClick = (event) => {
-    if (!event.altKey) return;
-    const clickedElement = event.target;
-
+  const getPathToSourceFromTarget = (clickedElement) => {
     for (const key in clickedElement) {
       if (clickedElement[key]?.constructor.name === "FiberNode") {
         const fiberNode = clickedElement[key];
@@ -31,11 +28,16 @@
         } while (!debugSource);
 
         const pathToSource = getFilePathToSource(debugSource);
-        window.location.assign(pathToSource);
-
-        break;
+        return pathToSource;
       }
     }
+  };
+
+  const handleClick = (event) => {
+    if (!event.altKey) return;
+
+    const pathToSource = getPathToSourceFromTarget(event.target);
+    window.location.assign(pathToSource);
   };
 
   const handleMouseMove = (event) => {
@@ -76,9 +78,6 @@
     elementOverlay.style.pointerEvents = "none";
     elementOverlay.style.transition = "all 0.1s cubic-bezier(.5,0,.25,1)";
     document.body.appendChild(elementOverlay);
-
-    window.removeEventListener("click", handleClick);
-    window.removeEventListener("mousemove", handleMouseMove);
 
     window.addEventListener("click", handleClick);
     window.addEventListener("mousemove", handleMouseMove);

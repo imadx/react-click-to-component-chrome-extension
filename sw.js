@@ -1,5 +1,3 @@
-var tabId = null;
-
 chrome.webNavigation.onBeforeNavigate.addListener(async () => {
   chrome.action.setIcon({
     path: "assets/icon-48-inactive.png",
@@ -12,7 +10,7 @@ chrome.webNavigation.onDOMContentLoaded.addListener(async () => {
   const id = Date.now().toString();
 
   // get the tabId
-  [{ id: tabId }] = await chrome.tabs.query({
+  const [{ id: tabId }] = await chrome.tabs.query({
     active: true,
     currentWindow: true,
   });

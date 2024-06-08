@@ -2,7 +2,6 @@
   let elementOverlay;
 
   const getFilePathToSource = (debugSource) => {
-    console.log(window);
     let fileName = debugSource.fileName;
 
     if (fileName.startsWith("<[project]")) {
@@ -32,7 +31,6 @@
         } while (!debugSource);
 
         const pathToSource = getFilePathToSource(debugSource);
-        console.log("Path to source:", pathToSource);
         window.location.assign(pathToSource);
 
         break;

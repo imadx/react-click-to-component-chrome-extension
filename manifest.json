@@ -1,0 +1,18 @@
+{
+  "name": "React Click To Component",
+  "version": "0.1",
+  "manifest_version": 3,
+  "description": "React Click To Component, a Chrome extension to open a React component in the editor by clicking on it.",
+  "background": {
+    "service_worker": "sw.js"
+  },
+  "permissions": ["nativeMessaging", "scripting", "webNavigation"],
+  "host_permissions": ["http://*/*"],
+  "action": {},
+  "icons": {
+    "16": "assets/icon-16.png",
+    "32": "assets/icon-32.png",
+    "48": "assets/icon-48.png",
+    "128": "assets/icon-128.png"
+  }
+}

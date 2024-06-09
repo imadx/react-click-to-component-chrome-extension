@@ -4,6 +4,8 @@
 
 This extension is a simple extension that allows you to click on a component name in a React file and open the file where the component is defined on your editor.
 
+Inspired by [ericclemmons/click-to-component](https://github.com/ericclemmons/click-to-component) and [React Dev Tools](https://react.dev/learn/react-developer-tools)
+
 ## Features
 
 - `Option + Click` or `Alt + Click` on a component to open the file in an editor

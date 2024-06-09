@@ -62,7 +62,7 @@
     elementOverlay.style.height = `${boundingRect.height}px`;
   };
 
-  if (window.___clickToReactIsContentLoaded !== "true") {
+  if (!window.___clickToReactIsContentLoaded) {
     // append a div to show the overlay
     elementOverlay = document.createElement("div");
     elementOverlay.style.position = "fixed";

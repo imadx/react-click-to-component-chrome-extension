@@ -1,6 +1,6 @@
 {
   "name": "React Click To Component",
-  "version": "0.1",
+  "version": "0.2",
   "manifest_version": 3,
   "description": "React Click To Component, a Chrome extension to open a React component in the editor by clicking on it.",
   "background": {

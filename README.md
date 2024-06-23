@@ -10,6 +10,7 @@ Inspired by [ericclemmons/click-to-component](https://github.com/ericclemmons/cl
 
 - `Option + Click` or `Alt + Click` on a component to open the file in an editor
 - Highlight the component name when hovering over it with `Option`/`Alt` key pressed
+- Supports Turbopack builds with manually defined project roots (that can be changed simply by updating the localStorage key `clickToReact-projectPath-{HOST}`)
 
 ## Screenshots
 

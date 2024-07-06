@@ -43,6 +43,21 @@
     if (!pathToSource) return;
 
     const localStorageKey = `clickToReact-projectPath-${window.location.host}`;
+    if (pathToSource.includes("file://[project]/")) {
+      let projectPath = localStorage.getItem(localStorageKey);
+      if (!projectPath) {
+        projectPath = prompt(
+          "Enter absolute path to the project root directory. This will be saved in localStorage if you want to modify it later.",
+        );
+        localStorage.setItem(localStorageKey, projectPath);
+      }
+
+      pathToSource = pathToSource.replace(
+        "file://[project]/",
+        `file://${projectPath}/`,
+      );
+    }
+
     if (pathToSource.includes("file://./")) {
       let projectPath = localStorage.getItem(localStorageKey);
       if (!projectPath) {

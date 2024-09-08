@@ -1,6 +1,27 @@
 (() => {
+  const LocalStorage = {
+    ProjectPath: `clickToReact-projectPath-${window.location.host}`,
+    Editor: `clickToReact-editor-${window.location.host}`,
+  }
+
   let elementOverlay;
   let elementOverlayContent;
+  let editor = localStorage.getItem(LocalStorage.Editor) ?? 'vscode';
+
+  const getEditorConfiguration = (editor) => {
+    switch (editor) {
+      case "vscode":
+        return {
+          url: 'vscode://file://{{fileName}}:{{lineNumber}}:{{columnNumber}}',
+        };
+
+      default:
+        return {
+          url: '{{fileName}}:{{lineNumber}}',
+        };
+
+    }
+  }
 
   const getFilePathToSource = (debugSource) => {
     if (!debugSource) return null;
@@ -12,7 +33,9 @@
       fileName = `.${fileName}`;
     }
 
-    return `vscode://file://${fileName}:${debugSource.lineNumber}:${debugSource.columnNumber}`;
+    return getEditorConfiguration(editor).url.replace('{{fileName}}', fileName)
+      .replace('{{lineNumber}}', debugSource.lineNumber)
+      .replace('{{columnNumber}}', debugSource.columnNumber);
   };
 
   const getPathToSourceFromTarget = (clickedElement) => {
@@ -30,8 +53,7 @@
           debugOwner = debugOwner._debugOwner;
         } while (!debugSource);
 
-        const pathToSource = getFilePathToSource(debugSource);
-        return pathToSource;
+        return getFilePathToSource(debugSource);
       }
     }
   };
@@ -42,7 +64,16 @@
     let pathToSource = getPathToSourceFromTarget(event.target);
     if (!pathToSource) return;
 
-    const localStorageKey = `clickToReact-projectPath-${window.location.host}`;
+    const localStorageKey = LocalStorage.ProjectPath;
+
+    if (!pathToSource.includes("file://")) {
+      // we are not able to get in an external file, copy the path and return
+      const sanitizedUrl = pathToSource.replace('[project]/', '')
+      navigator.clipboard.writeText(sanitizedUrl);
+
+      return;
+    }
+
     if (pathToSource.includes("file://[project]/")) {
       let projectPath = localStorage.getItem(localStorageKey);
       if (!projectPath) {
@@ -72,6 +103,7 @@
         `file://${projectPath}/`,
       );
     }
+
     window.location.assign(pathToSource);
   };
 

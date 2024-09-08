@@ -6,6 +6,8 @@
 
   let elementOverlay;
   let elementOverlayContent;
+  let elementTooltip;
+  let timeoutTooltip;
   let editor = localStorage.getItem(LocalStorage.Editor) ?? 'vscode';
 
   const getEditorConfiguration = (editor) => {
@@ -61,6 +63,9 @@
   const handleClick = (event) => {
     if (!event.altKey) return;
 
+    event.stopPropagation();
+    event.preventDefault();
+
     let pathToSource = getPathToSourceFromTarget(event.target);
     if (!pathToSource) return;
 
@@ -70,6 +75,18 @@
       // we are not able to get in an external file, copy the path and return
       const sanitizedUrl = pathToSource.replace('[project]/', '')
       navigator.clipboard.writeText(sanitizedUrl);
+
+      // show the tooltip
+      elementTooltip.innerHTML = `Path copied to clipboard: ${sanitizedUrl}`;
+      elementTooltip.style.opacity = "1";
+      elementTooltip.style.transform = "translateY(0)";
+
+      clearTimeout(timeoutTooltip);
+      timeoutTooltip = setTimeout(() => {
+        elementTooltip.style.opacity = "0";
+        elementTooltip.style.transform = "translateY(-1rem)";
+      }, 2000);
+
 
       return;
     }
@@ -162,6 +179,7 @@
     elementOverlay.style.pointerEvents = "none";
     elementOverlay.style.transition = "all 0.1s cubic-bezier(.5,0,.25,1)";
 
+
     // add child div to elementOverlay with a list of tags
     elementOverlayContent = document.createElement("div");
     elementOverlayContent.style.position = "absolute";
@@ -184,6 +202,31 @@
     elementOverlay.appendChild(elementOverlayContent);
 
     document.body.appendChild(elementOverlay);
+
+    // append a div to show the tooltip
+    elementTooltip = document.createElement("div");
+    elementTooltip.style.position = "fixed";
+    elementTooltip.style.top = "1rem";
+    elementTooltip.style.right = "1rem";
+    elementTooltip.style.maxWidth = "350px";
+    elementTooltip.style.padding = "0.5rem";
+    elementTooltip.style.fontFamily = "monospace";
+    elementTooltip.style.fontSize = "small";
+
+    elementTooltip.style.height = "max-content";
+    elementTooltip.style.background = "#56CCF255";
+    elementTooltip.style.backdropFilter = "blur(10px)";
+    elementTooltip.style.color = "#333";
+    elementTooltip.style.border = "1px dashed #009CFF";
+    elementTooltip.style.borderRadius = "4px";
+    elementTooltip.style.zIndex = "9999";
+    elementTooltip.style.display = "block";
+    elementTooltip.style.pointerEvents = "none";
+    elementTooltip.style.opacity = "0";
+    elementTooltip.style.transform = "translateY(-1rem)";
+    elementTooltip.style.transition = "all 0.1s cubic-bezier(.5,0,.25,1)";
+
+    document.body.appendChild(elementTooltip);
 
     window.addEventListener("click", handleClick);
     window.addEventListener("mousemove", handleMouseMove);
